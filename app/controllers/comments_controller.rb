@@ -1,13 +1,7 @@
 class CommentsController < ApplicationController
   before_action :set_comment, only: %i[ show edit update destroy ]
   before_action :is_an_authorized_user, only: [:destroy, :create]
-
-  def is_an_authorized_user
-    @photo = Photo.find(params.fetch(:comment).fetch(photo_id))
-    if current_user != @photo.owner && @photo.owner.private? && !current_user.leaders.include?(@photo.owner)
-      redirect_back fallback_location: root_url, alert: "You're not authorized for that. From Comments Controller."
-    end
-  end
+  before_action :ensure_current_user_is_author, only: [:edit, :update]
 
   # GET /comments or /comments.json
   def index
@@ -75,4 +69,18 @@ class CommentsController < ApplicationController
     def comment_params
       params.require(:comment).permit(:author_id, :photo_id, :body)
     end
+
+    def is_an_authorized_user
+      @photo = Photo.find(params.fetch(:comment).fetch(photo_id))
+      if current_user != @photo.owner && @photo.owner.private? && !current_user.leaders.include?(@photo.owner)
+        redirect_back fallback_location: root_url, alert: "You're not authorized for that. From Comments Controller."
+      end
+    end
+  
+    def ensure_current_user_is_author
+      if @comment.author != current_user
+        redirect_back fallback_location: root_url, alert: "You're not authorized for that. From Comments Controller."
+      end
+    end
+
 end
