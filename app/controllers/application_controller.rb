@@ -1,8 +1,8 @@
 class ApplicationController < ActionController::Base
   include Pundit::Authorization
   
-  after_action :verify_authorized, except: :index
-  after_action :verify_policy_scoped, only: :index
+  # after_action :verify_authorized, except: :index
+  # after_action :verify_policy_scoped, only: :index
 
   # If the project is set up with Devise accounts
   # after_action :verify_authorized, unless: :devise_controller?
