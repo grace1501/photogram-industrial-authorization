@@ -32,7 +32,7 @@ class ApplicationController < ActionController::Base
   private
 
   def user_not_authorized
-    flash[:alert] = "You are not authorized to perform this action. From Application Controller."
+    flash[:alert] = "You're not authorized for that. From Application Controller."
 
     redirect_back(fallback_location: root_url)
   end

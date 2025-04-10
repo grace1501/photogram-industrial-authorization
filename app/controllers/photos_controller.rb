@@ -68,7 +68,7 @@ class PhotosController < ApplicationController
 
     def ensure_current_user_is_owner
       if current_user != @photo.owner
-        redirect_back fallback_location: root_url, alert: "You are not authorized. From Photos Controller."
+        redirect_back fallback_location: root_url, alert: "You're not authorized for that. From Photos Controller."
       end
     end
 
